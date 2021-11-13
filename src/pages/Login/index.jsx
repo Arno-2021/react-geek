@@ -3,6 +3,9 @@ import './index.scss'
 import { Card, Form, Input, Button, Checkbox } from 'antd'
 import logo from '@/assets/logo.png'
 export default function Login() {
+    const onFinish = val => {
+        console.log(val)
+    }
     return (
         <div className='login'>
             <Card className='login-container'>
@@ -19,6 +22,7 @@ export default function Login() {
                     autoComplete='off'
                     size='large'
                     validateTrigger={['onChange', 'onBlur']}
+                    onFinish={onFinish}
                 >
                     <Form.Item
                         name='mobile'
