@@ -5,8 +5,8 @@ import {
     Switch,
     Redirect,
 } from 'react-router-dom'
-import Layout from './pages/Layout/index.jsx'
-import Login from './pages/Login/index.jsx'
+import Layout from '@/pages/Layout/index.jsx'
+import Login from '@/pages/Login/index.jsx'
 import NotFound from './pages/NotFound'
 export default function App() {
     return (
