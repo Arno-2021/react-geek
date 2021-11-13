@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './index.scss'
-import { Card, Form, Input, Button, Checkbox } from 'antd'
+import { Card, Form, Input, Button, Checkbox, message } from 'antd'
 import logo from '@/assets/logo.png'
+import { useDispatch } from 'react-redux'
+import { login } from '@/store/actions/login'
+import { useHistory } from 'react-router'
 export default function Login() {
-    const onFinish = val => {
-        console.log(val)
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const [loading, setLoading] = useState(false)
+    const onFinish = async val => {
+        setLoading(true)
+        try {
+            await dispatch(login(val))
+        } catch (e) {
+            setLoading(false)
+            message.error(e.response.data.message, 1)
+            return
+        }
+        message.success('登录成功', 1, () => history.push('/home'))
     }
     return (
         <div className='login'>
@@ -72,7 +86,12 @@ export default function Login() {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type='primary' htmlType='submit' block>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            block
+                            loading={loading}
+                        >
                             登录
                         </Button>
                     </Form.Item>
