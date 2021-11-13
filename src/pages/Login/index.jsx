@@ -18,16 +18,50 @@ export default function Login() {
                     }}
                     autoComplete='off'
                     size='large'
+                    validateTrigger={['onChange', 'onBlur']}
                 >
-                    <Form.Item name='mobile'>
+                    <Form.Item
+                        name='mobile'
+                        rules={[
+                            {
+                                pattern: /^1[3-9]\d{9}$/,
+                                message: '请输入正确的手机格式',
+                            },
+                            {
+                                required: true,
+                                message: '请输入您的手机号',
+                            },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
 
-                    <Form.Item name='code'>
+                    <Form.Item
+                        name='code'
+                        rules={[
+                            { pattern: /^\d{6}$/, message: '请输入6位验证码' },
+                        ]}
+                    >
                         <Input />
                     </Form.Item>
 
-                    <Form.Item name='agreement' valuePropName='checked'>
+                    <Form.Item
+                        name='agreement'
+                        valuePropName='checked'
+                        rules={[
+                            {
+                                validator: (_, val) => {
+                                    if (val) {
+                                        return Promise.resolve()
+                                    } else {
+                                        return Promise.reject(
+                                            new Error('请阅读并同意相关条款')
+                                        )
+                                    }
+                                },
+                            },
+                        ]}
+                    >
                         <Checkbox>
                             我已阅读并同意[隐私条款]和[用户协议]
                         </Checkbox>
