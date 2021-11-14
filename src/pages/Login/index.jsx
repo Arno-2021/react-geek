@@ -4,21 +4,23 @@ import { Card, Form, Input, Button, Checkbox, message } from 'antd'
 import logo from '@/assets/logo.png'
 import { useDispatch } from 'react-redux'
 import { login } from '@/store/actions/login'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 export default function Login() {
     const dispatch = useDispatch()
     const history = useHistory()
+    const location = useLocation()
     const [loading, setLoading] = useState(false)
     const onFinish = async val => {
+        let from = location.state ? location.state.from : '/home'
         setLoading(true)
         try {
             await dispatch(login(val))
         } catch (e) {
             setLoading(false)
-            message.error(e.response.data.message, 1)
+            message.error(e.response?.data.message, 1)
             return
         }
-        message.success('登录成功', 1, () => history.push('/home'))
+        message.success('登录成功', 1, () => history.replace(from))
     }
     return (
         <div className={styles.root}>

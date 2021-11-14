@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Popconfirm, message } from 'antd'
 import styles from './index.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -8,19 +8,31 @@ import {
     HddOutlined,
     EditOutlined,
 } from '@ant-design/icons'
-import { Route, Link, Switch, useLocation } from 'react-router-dom'
+import { Route, Link, Switch, useLocation, useHistory } from 'react-router-dom'
 import Home from './Home'
 import Article from './Article'
 import Publish from './Publish'
 import { getUserInfo } from '@/store/actions/user'
+import { logout } from '@/store/actions/login'
 const { Header, Sider } = Layout
 export default function MyLayout() {
     const location = useLocation()
     const dispatch = useDispatch()
+    const histroy = useHistory()
     const user = useSelector(state => state.user)
     useEffect(() => {
         dispatch(getUserInfo())
     }, [dispatch])
+    const onConfirm = () => {
+        histroy.replace({
+            pathname: '/login',
+            state: {
+                from: location.pathname,
+            },
+        })
+        dispatch(logout())
+        message.success('您已成功登出！', 1)
+    }
     return (
         <div className={styles.root}>
             <Layout>
@@ -28,9 +40,16 @@ export default function MyLayout() {
                     <div className='logo' />
                     <div className='profile'>
                         <span>{user.name}</span>
-                        <span>
+                        <Popconfirm
+                            title='您是否要退出登录？'
+                            okText='确认'
+                            cancelText='取消'
+                            placement='bottomRight'
+                            onConfirm={onConfirm}
+                        >
                             <LogoutOutlined></LogoutOutlined> 退出
-                        </span>
+                        </Popconfirm>
+                        <span></span>
                     </div>
                 </Header>
                 <Layout>

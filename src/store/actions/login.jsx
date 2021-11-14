@@ -1,6 +1,6 @@
 import axios from '@/utils/request'
-import { LOGIN } from '../constant'
-import { setToken } from '@/utils/token'
+import { LOGIN, LOGOUT } from '../constant'
+import { removeToken, setToken } from '@/utils/token'
 export const login = data => {
     return async dispatch => {
         const res = await axios({
@@ -13,6 +13,14 @@ export const login = data => {
         dispatch({
             type: LOGIN,
             payload: token,
+        })
+    }
+}
+export const logout = () => {
+    removeToken()
+    return dispatch => {
+        dispatch({
+            type: LOGOUT,
         })
     }
 }

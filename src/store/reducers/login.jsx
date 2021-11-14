@@ -1,4 +1,4 @@
-import { LOGIN } from '../constant/index'
+import { LOGIN, LOGOUT } from '../constant/index'
 const initVal = {
     token: '',
 }
@@ -7,6 +7,12 @@ const reducer = (state = initVal, action) => {
         return {
             ...state,
             token: action.payload,
+        }
+    }
+    if (action.type === LOGOUT) {
+        return {
+            ...state,
+            token: '',
         }
     }
     return state

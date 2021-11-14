@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { getToken } from './token'
+import { message } from 'antd'
+import history from '@/utils/history'
 const instance = axios.create({
     baseURL: 'http://geek.itheima.net/v1_0/',
     timeout: 5000,
@@ -24,6 +26,18 @@ instance.interceptors.response.use(
     },
     function (error) {
         // 对响应错误做点什么
+        if (!error.response) {
+            message.error('网络繁忙！请稍后重试')
+            return Promise.reject(error)
+        }
+        if (error.response.status === 401) {
+            history.replace({
+                pathname: '/login',
+                state: {
+                    from: history.location.pathname,
+                },
+            })
+        }
         return Promise.reject(error)
     }
 )
