@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './index.scss'
+import styles from './index.module.scss'
 import { Card, Form, Input, Button, Checkbox, message } from 'antd'
 import logo from '@/assets/logo.png'
 import { useDispatch } from 'react-redux'
@@ -21,7 +21,7 @@ export default function Login() {
         message.success('登录成功', 1, () => history.push('/home'))
     }
     return (
-        <div className='login'>
+        <div className={styles.root}>
             <Card className='login-container'>
                 <img className='login-logo' src={logo} alt='' />
                 {/* 登录表单 */}
