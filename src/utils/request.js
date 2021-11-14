@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from './token'
 const instance = axios.create({
     baseURL: 'http://geek.itheima.net/v1_0/',
     timeout: 5000,
@@ -6,6 +7,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function (config) {
         // 在发送请求之前做些什么
+        config.headers.Authorization = `Bearer ${getToken()}`
         return config
     },
     function (error) {
