@@ -77,7 +77,10 @@ export default function MyLayout() {
                             </Menu.Item>
                         </Menu>
                     </Sider>
-                    <Layout>
+                    <Layout
+                        style={{ padding: '20px', overflow: 'auto' }}
+                        id='table'
+                    >
                         <Switch>
                             <Route exact path='/home' component={Home}></Route>
                             <Route

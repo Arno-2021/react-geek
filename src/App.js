@@ -5,6 +5,7 @@ import Layout from '@/pages/Layout/index.jsx'
 import Login from '@/pages/Login/index.jsx'
 import NotFound from './pages/NotFound'
 import PrivateRoute from '@/components/PrivateRoute'
+
 export default function App() {
     return (
         <Router history={history}>

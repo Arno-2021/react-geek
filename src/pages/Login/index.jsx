@@ -32,7 +32,7 @@ export default function Login() {
                     wrapperCol={{ span: 24 }}
                     initialValues={{
                         agreement: true,
-                        mobile: '13702890345',
+                        mobile: '13911111111',
                         code: '246810',
                     }}
                     autoComplete='off'
