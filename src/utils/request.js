@@ -3,7 +3,7 @@ import { getToken } from './token'
 import { message } from 'antd'
 import history from '@/utils/history'
 const instance = axios.create({
-    baseURL: 'http://geek.itheima.net/v1_0/',
+    baseURL: process.env.REACT_APP_BASE_URL,
     timeout: 5000,
 })
 instance.interceptors.request.use(

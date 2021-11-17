@@ -92,7 +92,12 @@ export default function MyLayout() {
                                 component={Article}
                             ></Route>
                             <Route
+                                exact
                                 path='/home/publish'
+                                component={Publish}
+                            ></Route>
+                            <Route
+                                path='/home/publish/:id'
                                 component={Publish}
                             ></Route>
                         </Switch>

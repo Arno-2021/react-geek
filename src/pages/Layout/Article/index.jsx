@@ -13,7 +13,7 @@ import {
     message,
 } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { articleType } from '@/constant/articles'
 import Channels from '@/components/Channels'
 import { useEffect, useRef } from 'react'
@@ -24,6 +24,7 @@ import eImage from '@/assets/error.png'
 import { delArticle } from '@/store/actions/article'
 export default function Article() {
     const aRef = useRef({})
+    const history = useHistory()
     const articles = useSelector(state => state.article.articles)
     const dispatch = useDispatch()
     useEffect(() => {
@@ -116,6 +117,9 @@ export default function Article() {
                             type='primary'
                             shape='circle'
                             icon={<EditOutlined />}
+                            onClick={() =>
+                                history.push(`/home/publish/${text}`)
+                            }
                         ></Button>
                         <Popconfirm
                             title='确定要删除该文章吗？'
