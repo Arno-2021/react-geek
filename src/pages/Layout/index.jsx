@@ -16,6 +16,7 @@ import { getUserInfo } from '@/store/actions/user'
 import { logout } from '@/store/actions/login'
 const { Header, Sider } = Layout
 export default function MyLayout() {
+    const { articles } = useSelector(state => state.article)
     const location = useLocation()
     const dispatch = useDispatch()
     const histroy = useHistory()
@@ -23,6 +24,9 @@ export default function MyLayout() {
     useEffect(() => {
         dispatch(getUserInfo())
     }, [dispatch])
+    useEffect(() => {
+        document.querySelector('.table').scrollTo(0, 0)
+    }, [articles.per_page])
     const onConfirm = () => {
         histroy.replace({
             pathname: '/login',
@@ -79,7 +83,7 @@ export default function MyLayout() {
                     </Sider>
                     <Layout
                         style={{ padding: '20px', overflow: 'auto' }}
-                        id='table'
+                        className='table'
                     >
                         <Switch>
                             <Route exact path='/home' component={Home}></Route>
