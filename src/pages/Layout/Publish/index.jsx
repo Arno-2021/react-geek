@@ -20,6 +20,7 @@ import { Link, useHistory, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addArticle } from '@/store/actions/publish'
 import { getArticleDetail } from '@/store/actions/publish'
+import { editArticle } from '@/store/actions/publish'
 export default function Publish() {
     const { id } = useParams()
     const dispatch = useDispatch()
@@ -33,13 +34,16 @@ export default function Publish() {
     useEffect(() => {
         if (!id) return
         dispatch(getArticleDetail(id)).then(res => {
-            form.current.setFieldsValue(res.data)
-            setType(res.data.cover.type)
             const showImg = res.data.cover.images.map(item => {
                 return {
                     url: item,
                 }
             })
+            form.current.setFieldsValue({
+                ...res.data,
+                type: res.data.cover.type,
+            })
+            setType(res.data.cover.type)
             setflieList(showImg)
             imgRef.current = showImg
         })
@@ -60,22 +64,41 @@ export default function Publish() {
         form.current.validateFields(['type'])
     }
     const subArticle = (val, draft = false) => {
-        return addArticle(
-            {
-                ...val,
-                cover: {
-                    type,
-                    images: fileList.map(item => {
-                        if (item.url) {
-                            return item.url
-                        } else {
-                            return item.response.data.url
-                        }
-                    }),
+        if (id) {
+            return editArticle(
+                {
+                    ...val,
+                    cover: {
+                        type: val.type,
+                        images: fileList.map(item => {
+                            if (item.url) {
+                                return item.url
+                            } else {
+                                return item.response.data.url
+                            }
+                        }),
+                    },
                 },
-            },
-            draft
-        )
+                id
+            )
+        } else {
+            return addArticle(
+                {
+                    ...val,
+                    cover: {
+                        type,
+                        images: fileList.map(item => {
+                            if (item.url) {
+                                return item.url
+                            } else {
+                                return item.response.data.url
+                            }
+                        }),
+                    },
+                },
+                draft
+            )
+        }
     }
     const onPreview = val => {
         if (val.url) {
@@ -105,7 +128,9 @@ export default function Publish() {
                         <Breadcrumb.Item>
                             <Link to='/home'>首页</Link>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item>发表文章</Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            {id ? '编辑' : '发表'}文章
+                        </Breadcrumb.Item>
                     </Breadcrumb>
                 }
             >
@@ -180,7 +205,7 @@ export default function Publish() {
                     <Form.Item wrapperCol={{ offset: 3 }}>
                         <Space>
                             <Button type='primary' htmlType='submit'>
-                                发布文章
+                                {id ? '编辑' : '发表'}文章
                             </Button>
                             <Button onClick={saveArticle}>存入草稿</Button>
                         </Space>

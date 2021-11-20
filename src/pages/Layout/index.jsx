@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, lazy } from 'react'
 import { Layout, Menu, Popconfirm, message } from 'antd'
 import styles from './index.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,18 +9,26 @@ import {
     EditOutlined,
 } from '@ant-design/icons'
 import { Route, Link, Switch, useLocation, useHistory } from 'react-router-dom'
-import Home from './Home'
-import Article from './Article'
-import Publish from './Publish'
 import { getUserInfo } from '@/store/actions/user'
 import { logout } from '@/store/actions/login'
 const { Header, Sider } = Layout
+const Home = lazy(() => import('./Home'))
+const Article = lazy(() => import('./Article'))
+const Publish = lazy(() => import('./Publish'))
 export default function MyLayout() {
     const { articles } = useSelector(state => state.article)
     const location = useLocation()
     const dispatch = useDispatch()
     const histroy = useHistory()
     const user = useSelector(state => state.user)
+    const [pathname, setPathname] = useState(location.pathname)
+    useEffect(() => {
+        if (location.pathname.startsWith('/home/publish')) {
+            setPathname('/home/publish')
+        } else {
+            setPathname(location.pathname)
+        }
+    }, [location.pathname])
     useEffect(() => {
         dispatch(getUserInfo())
     }, [dispatch])
@@ -60,7 +68,7 @@ export default function MyLayout() {
                     <Sider width={200} className='site-layout-background'>
                         <Menu
                             mode='inline'
-                            selectedKeys={[location.pathname]}
+                            selectedKeys={[pathname]}
                             style={{ height: '100%', borderRight: 0 }}
                             theme='dark'
                         >
@@ -94,10 +102,12 @@ export default function MyLayout() {
                             <Route
                                 exact
                                 path='/home/publish'
+                                key='add'
                                 component={Publish}
                             ></Route>
                             <Route
                                 path='/home/publish/:id'
+                                key='edit'
                                 component={Publish}
                             ></Route>
                         </Switch>
